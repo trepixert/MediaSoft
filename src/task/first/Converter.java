@@ -1,6 +1,6 @@
 package task.first;
 
 public interface Converter {
-    double toDollars();
-    double toRubbles();
+    String toDollars(String number);
+    String toRubbles(String number);
 }

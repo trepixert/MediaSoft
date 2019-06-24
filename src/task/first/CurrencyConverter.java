@@ -9,7 +9,13 @@ public class CurrencyConverter {
 
     public static void main(String[] args) {
 	// write your code here
-        new CurrencyConverter().start();
+        String string = "toDollars(737р + toRubles($85,4))";
+        String[] result = string.split("\\(");
+        for (String s : result) {
+            s = s.replaceAll(" ", "");
+            System.out.println(s);
+        }
+        //new CurrencyConverter().start();
     }
 
     private void start() {
