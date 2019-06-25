@@ -1,4 +1,4 @@
-package task.first;
+package main.java.task.first;
 
 public class Operations {
     public static double plus(double a, double b){
