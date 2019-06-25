@@ -2,8 +2,8 @@ package main.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import task.first.main.java.task.first.Converter;
-import task.first.main.java.task.first.Implementations.ConverterImpl;
+import main.java.task.first.Converter;
+import main.java.task.first.Implementations.ConverterImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
