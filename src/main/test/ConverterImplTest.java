@@ -2,7 +2,7 @@ package main.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import main.java.task.first.Converter;
+import main.java.task.first.Interfaces.Converter;
 import main.java.task.first.Implementations.ConverterImpl;
 
 import java.math.BigDecimal;

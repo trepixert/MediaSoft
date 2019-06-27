@@ -1,8 +1,10 @@
-package main.java.task.first;
+package main.java.task.first.Implementations;
+
+import main.java.task.first.Interfaces.ExpressionParserAndCalc;
 
 import java.util.*;
 
-public class ExpressionParser {
+public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
     private String operators = "+-*/";
     private String delimiters = "() " + operators;
 
@@ -94,7 +96,7 @@ public class ExpressionParser {
         return postfix;
     }
 
-    public Double calc(List<String> postfix) {
+    public double calc(List<String> postfix) {
         Deque<Double> stack = new ArrayDeque<>();
         for (String x : postfix) {
             if (x.equals("sqrt")) stack.push(Math.sqrt(stack.pop()));

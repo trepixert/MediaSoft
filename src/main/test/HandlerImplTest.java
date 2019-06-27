@@ -1,6 +1,6 @@
 package main.test;
 
-import main.java.task.first.Handler;
+import main.java.task.first.Interfaces.Handler;
 import main.java.task.first.Implementations.HandlerImpl;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,21 +1,27 @@
 package main.java.task.first.Implementations;
 
-import main.java.task.first.Converter;
-import main.java.task.first.ExpressionParser;
-import main.java.task.first.Handler;
+import main.java.task.first.Interfaces.Converter;
+import main.java.task.first.Interfaces.ExpressionParserAndCalc;
+import main.java.task.first.Interfaces.Handler;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class HandlerImpl implements Handler {
-    private Converter converter = new ConverterImpl();
+    private final Converter converter;
+    private final ExpressionParserAndCalc parserAndCalc;
     private List<String> symbolsCurrency = Arrays.asList("\\$");
     private List<String> lettersCurrency = Arrays.asList("P");
 
+    public HandlerImpl() {
+        converter = new ConverterImpl();
+        parserAndCalc = new ExpressionParserAndCalcImpl();
+    }
+
     @Override
     public double doHandlerAndGetResult(String currency, String expression) throws Exception {
-        if(!symbolsCurrency.contains(currency)){
-            if(!lettersCurrency.contains(currency)){
+        if (!symbolsCurrency.contains(currency)) {
+            if (!lettersCurrency.contains(currency)) {
                 throw new Exception("Такой валюты нет");
             }
         }
@@ -30,19 +36,18 @@ public class HandlerImpl implements Handler {
                 break;
         }
         newExpression = newExpression.replaceAll(symbolsCurrency.contains(currency) ?
-                        "\\$"
+                        currency
                         :
                         lettersCurrency.contains(currency) ?
                                 currency.toLowerCase()
                                 : ""
                 , "");
         newExpression = newExpression.replaceAll(",", ".");
-        ExpressionParser parser = new ExpressionParser();
-        List<String> expressions = parser.parse(newExpression);
-        boolean flag = parser.isFlag();
-        double result=0;
+        List<String> expressions = parserAndCalc.parse(newExpression);
+        boolean flag = parserAndCalc.isFlag();
+        double result = 0;
         if (flag) {
-            result = parser.calc(expressions);
+            result = parserAndCalc.calc(expressions);
         }
         return result;
     }

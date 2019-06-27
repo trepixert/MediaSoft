@@ -1,6 +1,6 @@
 package main.java.task.first.Implementations;
 
-import main.java.task.first.Converter;
+import main.java.task.first.Interfaces.Converter;
 
 public class ConverterImpl implements Converter {
     private final double DOLLAR_COURSE = 65.75;
