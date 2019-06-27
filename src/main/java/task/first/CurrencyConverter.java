@@ -14,15 +14,15 @@ public class CurrencyConverter {
     private void start() {
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
-                System.out.println("At first type finally currency which you want to see, for example: \n" +
-                        "$ or P(eng letter)");
-                String currency = scanner.next();
-                System.out.println("Type expression, for example: " +
+                System.out.println("Для начала введите итоговую валюту, к которой будет приведен результат выражения, например: \n" +
+                        "\\$(\\$ потому что данный символ зарезервирован) или P(англ буква)");
+                String currency = scanner.nextLine();
+                System.out.println("Напишите выражение, например (здесь \\ добавлять не надо): " +
                         "737p + $85.4 - 130p - $30");
                 String expression = scanner.nextLine();
                 if (expression.equals("quit")) break;
-                expression = handler.doHandlerAndGetResult(currency, expression);
-                System.out.println(expression);
+                double result = handler.doHandlerAndGetResult(currency, expression);
+                System.out.println(String.format("Валюта: %s\nРезультат: %.2f",currency,result));
             }
         } catch (Exception e) {
             e.printStackTrace();

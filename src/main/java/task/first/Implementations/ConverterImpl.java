@@ -11,7 +11,8 @@ public class ConverterImpl implements Converter {
         }
         number = number.replace("p","");
         double num = Double.parseDouble(number);
-        return "$"+(num/ DOLLAR_COURSE);
+        double result = num/DOLLAR_COURSE;
+        return String.format("$%.2f", result);
     }
 
     @Override

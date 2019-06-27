@@ -1,5 +1,5 @@
 package main.java.task.first;
 
 public interface Handler {
-    String doHandlerAndGetResult(String currency, String expression);
+    double doHandlerAndGetResult(String currency, String expression) throws Exception;
 }

@@ -11,8 +11,13 @@ public class HandlerImplTest {
     @Test
     public void test(){
         Handler handler = new HandlerImpl();
-        String result = handler.doHandlerAndGetResult("P", "737р + ($85.4 - $1) + $1");
-        Assert.assertEquals("737р+(5615.05p-65.75p)+65.75p",result);
+        double result = 0;
+        try {
+            result = handler.doHandlerAndGetResult("\\$", "737p + ($85.4 - 1p) + $1");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        Assert.assertEquals(97.59,result);
     }
 
 }

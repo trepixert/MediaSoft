@@ -1,28 +1,54 @@
 package main.java.task.first.Implementations;
 
 import main.java.task.first.Converter;
+import main.java.task.first.ExpressionParser;
 import main.java.task.first.Handler;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class HandlerImpl implements Handler {
     private Converter converter = new ConverterImpl();
+    private List<String> symbolsCurrency = Arrays.asList("\\$");
+    private List<String> lettersCurrency = Arrays.asList("P");
 
     @Override
-    public String doHandlerAndGetResult(String currency, String expression) {
+    public double doHandlerAndGetResult(String currency, String expression) throws Exception {
+        if(!symbolsCurrency.contains(currency)){
+            if(!lettersCurrency.contains(currency)){
+                throw new Exception("Такой валюты нет");
+            }
+        }
         expression = expression.replaceAll(" ", "");
         String newExpression = "";
         switch (currency) {
-            case "$":
+            case "\\$":
                 newExpression = handlerToDollars(expression);
                 break;
             case "P":
                 newExpression = handlerToRubles(expression);
-                return newExpression;
+                break;
         }
-        return null;
+        newExpression = newExpression.replaceAll(symbolsCurrency.contains(currency) ?
+                        "\\$"
+                        :
+                        lettersCurrency.contains(currency) ?
+                                currency.toLowerCase()
+                                : ""
+                , "");
+        newExpression = newExpression.replaceAll(",", ".");
+        ExpressionParser parser = new ExpressionParser();
+        List<String> expressions = parser.parse(newExpression);
+        boolean flag = parser.isFlag();
+        double result=0;
+        if (flag) {
+            result = parser.calc(expressions);
+        }
+        return result;
     }
 
     private String handlerToRubles(String expression) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder editExpression = new StringBuilder();
         for (int i = 0; i < expression.length(); i++) {
             char symbol = expression.charAt(i);
             if (symbol == '$') {
@@ -37,21 +63,50 @@ public class HandlerImpl implements Handler {
                 if (index == expression.length() - 1) {
                     temp.append(symbol);
                 }
-                sb.append(converter.toRubbles(new String(temp)));
-                if (i+1 != expression.length() - 1) {
-                    sb.append(symbol);
+                editExpression.append(converter.toRubbles(new String(temp)));
+                if (i + 1 != expression.length() - 1) {
+                    editExpression.append(symbol);
                 }
                 i = index;
                 continue;
             }
-            sb.append(symbol);
+            editExpression.append(symbol);
         }
-        return new String(sb);
+        return new String(editExpression);
     }
 
     private String handlerToDollars(String expression) {
-
-        return null;
+        StringBuilder editExpression = new StringBuilder(expression);
+        for (int i = 0; i < editExpression.length(); i++) {
+            char symbol = editExpression.charAt(i);
+            if (symbol == 'p') {
+                int indexr = i;
+                editExpression.insert(i + 1, '/');
+                while (symbol != '+' && symbol != '-'
+                        && symbol != '(' && indexr != 0) {
+                    indexr--;
+                    symbol = editExpression.charAt(indexr);
+                }
+                if (indexr != 0) {
+                    editExpression.insert(indexr + 1, '/');
+                } else {
+                    editExpression.insert(indexr, '/');
+                }
+                i++;
+            }
+        }
+        String[] splitByRoubles = new String(editExpression).split("/");
+        editExpression = new StringBuilder();
+        for (int i = 0; i < splitByRoubles.length; i++) {
+            String splitExpression = splitByRoubles[i];
+            editExpression.append(
+                    splitExpression.contains("p") ?
+                            converter.toDollars(splitExpression)
+                            :
+                            splitExpression
+            );
+        }
+        return new String(editExpression);
     }
 
 }
