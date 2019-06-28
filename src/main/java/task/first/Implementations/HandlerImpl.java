@@ -33,13 +33,15 @@ public class HandlerImpl implements Handler {
                 newExpression = handlerToRubles(expression);
                 break;
         }
-        newExpression = newExpression.replaceAll(
-                currencies.contains(currency) ?
-                        currency.toLowerCase()
-                        :
-                        ""
-                , "");
-        newExpression = newExpression.replaceAll(",", ".");
+        newExpression =
+                newExpression
+                        .replaceAll(
+                                currencies.contains(currency) ?
+                                        currency.toLowerCase()
+                                        :
+                                        ""
+                                , "")
+                        .replaceAll(",", ".");
         List<String> expressions = parserAndCalc.parse(newExpression);
         double result = 0;
         if (parserAndCalc.isFlag()) {
