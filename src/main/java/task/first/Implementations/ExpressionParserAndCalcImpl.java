@@ -5,7 +5,7 @@ import main.java.task.first.Interfaces.ExpressionParserAndCalc;
 import java.util.*;
 
 public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
-    private String operators = "+-*/";
+    private String operators = "+-";
     private String delimiters = "() " + operators;
 
     private boolean flag = true;
@@ -26,15 +26,10 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
         return false;
     }
 
-    private boolean isFunction(String token) {
-        return token.equals("sqrt") || token.equals("cube") || token.equals("pow10");
-    }
-
     private int priority(String token) {
         if (token.equals("(")) return 1;
         if (token.equals("+") || token.equals("-")) return 2;
-        if (token.equals("*") || token.equals("/")) return 3;
-        return 4;
+        return 3;
     }
 
     public List<String> parse(String infix) {
@@ -51,8 +46,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
                 return postfix;
             }
             if (curr.equals(" ")) continue;
-            if (isFunction(curr)) stack.push(curr);
-            else if (isDelimiter(curr)) {
+            if (isDelimiter(curr)) {
                 if (curr.equals("(")) stack.push(curr);
                 else if (curr.equals(")")) {
                     while (!stack.peek().equals("(")) {
@@ -64,7 +58,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
                         }
                     }
                     stack.pop();
-                    if (!stack.isEmpty() && isFunction(stack.peek())) {
+                    if (!stack.isEmpty()) {
                         postfix.add(stack.pop());
                     }
                 } else {
@@ -74,7 +68,6 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
                         while (!stack.isEmpty() && (priority(curr) <= priority(stack.peek()))) {
                             postfix.add(stack.pop());
                         }
-
                     }
                     stack.push(curr);
                 }

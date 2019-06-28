@@ -1,9 +1,9 @@
 package main.test;
 
+import main.java.task.first.Implementations.ConverterImpl;
+import main.java.task.first.Interfaces.Converter;
 import org.junit.Assert;
 import org.junit.Test;
-import main.java.task.first.Interfaces.Converter;
-import main.java.task.first.Implementations.ConverterImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,9 +13,6 @@ public class ConverterImplTest {
     @Test
     public void toDollars() {
         Converter converter = new ConverterImpl();
-        String result = converter.toDollars("737p");
-        BigDecimal resultOf = new BigDecimal(result).setScale(1, RoundingMode.HALF_UP);
-        Assert.assertEquals("11.2", resultOf.toString());
     }
 
     @Test

@@ -10,8 +10,8 @@ import java.util.List;
 public class HandlerImpl implements Handler {
     private final Converter converter;
     private final ExpressionParserAndCalc parserAndCalc;
-    private List<String> symbolsCurrency = Arrays.asList("\\$");
-    private List<String> lettersCurrency = Arrays.asList("P");
+    private List<String> currencies = Arrays.asList("P", "\\$");
+    private StringBuilder editExpression;
 
     public HandlerImpl() {
         converter = new ConverterImpl();
@@ -20,10 +20,8 @@ public class HandlerImpl implements Handler {
 
     @Override
     public double doHandlerAndGetResult(String currency, String expression) throws Exception {
-        if (!symbolsCurrency.contains(currency)) {
-            if (!lettersCurrency.contains(currency)) {
-                throw new Exception("Такой валюты нет");
-            }
+        if (!currencies.contains(currency)) {
+            throw new Exception("Такой валюты нет");
         }
         expression = expression.replaceAll(" ", "");
         String newExpression = "";
@@ -35,81 +33,90 @@ public class HandlerImpl implements Handler {
                 newExpression = handlerToRubles(expression);
                 break;
         }
-        newExpression = newExpression.replaceAll(symbolsCurrency.contains(currency) ?
-                        currency
+        newExpression = newExpression.replaceAll(
+                currencies.contains(currency) ?
+                        currency.toLowerCase()
                         :
-                        lettersCurrency.contains(currency) ?
-                                currency.toLowerCase()
-                                : ""
+                        ""
                 , "");
         newExpression = newExpression.replaceAll(",", ".");
         List<String> expressions = parserAndCalc.parse(newExpression);
-        boolean flag = parserAndCalc.isFlag();
         double result = 0;
-        if (flag) {
+        if (parserAndCalc.isFlag()) {
             result = parserAndCalc.calc(expressions);
         }
         return result;
     }
 
     private String handlerToRubles(String expression) {
-        StringBuilder editExpression = new StringBuilder();
-        for (int i = 0; i < expression.length(); i++) {
-            char symbol = expression.charAt(i);
-            if (symbol == '$') {
-                StringBuilder temp = new StringBuilder();
-                int index = i;
-                while (symbol != '+' && symbol != '-'
-                        && symbol != ')' && index != expression.length() - 1) {
-                    temp.append(symbol);
-                    index++;
-                    symbol = expression.charAt(index);
-                }
-                if (index == expression.length() - 1) {
-                    temp.append(symbol);
-                }
-                editExpression.append(converter.toRubbles(new String(temp)));
-                if (i + 1 != expression.length() - 1) {
-                    editExpression.append(symbol);
-                }
-                i = index;
-                continue;
-            }
-            editExpression.append(symbol);
+        editExpression = new StringBuilder(expression);
+        String[] splitByDollars = handleExpressionToConvert(true, '$').split("/");
+        editExpression = new StringBuilder();
+        for (String splitExpression : splitByDollars) {
+            editExpression.append(
+                    splitExpression.contains("$") ?
+                            converter.toRubbles(splitExpression)
+                            :
+                            splitExpression
+            );
         }
         return new String(editExpression);
     }
 
     private String handlerToDollars(String expression) {
-        StringBuilder editExpression = new StringBuilder(expression);
-        for (int i = 0; i < editExpression.length(); i++) {
-            char symbol = editExpression.charAt(i);
-            if (symbol == 'p') {
-                int indexr = i;
-                editExpression.insert(i + 1, '/');
-                while (symbol != '+' && symbol != '-'
-                        && symbol != '(' && indexr != 0) {
-                    indexr--;
-                    symbol = editExpression.charAt(indexr);
-                }
-                if (indexr != 0) {
-                    editExpression.insert(indexr + 1, '/');
-                } else {
-                    editExpression.insert(indexr, '/');
-                }
-                i++;
-            }
-        }
-        String[] splitByRoubles = new String(editExpression).split("/");
+        editExpression = new StringBuilder(expression);
+        String[] splitByRoubles = handleExpressionToConvert(false, 'p').split("/");
         editExpression = new StringBuilder();
-        for (int i = 0; i < splitByRoubles.length; i++) {
-            String splitExpression = splitByRoubles[i];
+        for (String splitExpression : splitByRoubles) {
             editExpression.append(
                     splitExpression.contains("p") ?
                             converter.toDollars(splitExpression)
                             :
                             splitExpression
             );
+        }
+        return new String(editExpression);
+    }
+
+    private String handleExpressionToConvert(boolean isReversed, char currency) {
+        char currencyAtExpression;
+        if (isReversed) {
+            for (int i = 0; i < editExpression.length(); i++) {
+                currencyAtExpression = editExpression.charAt(i);
+                if (currency == currencyAtExpression) {
+                    editExpression.insert(i, '/');
+                    while (currencyAtExpression != '+' && currencyAtExpression != '-'
+                            && currencyAtExpression != ')' && i != editExpression.length() - 1) {
+                        i++;
+                        currencyAtExpression = editExpression.charAt(i);
+                    }
+                    if (i != editExpression.length() - 1 || currencyAtExpression == ')') {
+                        editExpression.insert(i, '/');
+                    } else {
+                        editExpression.insert(i + 1, '/');
+                    }
+                    i++;
+                }
+            }
+        } else {
+            for (int i = 0; i < editExpression.length(); i++) {
+                currencyAtExpression = editExpression.charAt(i);
+                if (currency == currencyAtExpression) {
+                    int indexr = i;
+                    editExpression.insert(i + 1, '/');
+                    while (currencyAtExpression != '+' && currencyAtExpression != '-'
+                            && currencyAtExpression != '(' && indexr != 0) {
+                        indexr--;
+                        currencyAtExpression = editExpression.charAt(indexr);
+                    }
+                    if (indexr != 0) {
+                        editExpression.insert(indexr + 1, '/');
+                    } else {
+                        editExpression.insert(indexr, '/');
+                    }
+                    i++;
+                }
+            }
         }
         return new String(editExpression);
     }
