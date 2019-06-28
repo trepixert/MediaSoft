@@ -92,21 +92,21 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
     public double calc(List<String> postfix) {
         Deque<Double> stack = new ArrayDeque<>();
         for (String x : postfix) {
-            if (x.equals("sqrt")) stack.push(Math.sqrt(stack.pop()));
-            else if (x.equals("cube")) {
-                Double tmp = stack.pop();
-                stack.push(tmp * tmp * tmp);
-            } else if (x.equals("pow10")) stack.push(Math.pow(10, stack.pop()));
-            else if (x.equals("+")) stack.push(stack.pop() + stack.pop());
-            else if (x.equals("-")) {
-                Double b = stack.pop(), a = stack.pop();
-                stack.push(a - b);
-            } else if (x.equals("*")) stack.push(stack.pop() * stack.pop());
-            else if (x.equals("/")) {
-                Double b = stack.pop(), a = stack.pop();
-                stack.push(a / b);
-            } else if (x.equals("u-")) stack.push(-stack.pop());
-            else stack.push(Double.valueOf(x));
+            switch (x) {
+                case "+":
+                    stack.push(stack.pop() + stack.pop());
+                    break;
+                case "-":
+                    Double b = stack.pop(), a = stack.pop();
+                    stack.push(a - b);
+                    break;
+                case "u-":
+                    stack.push(-stack.pop());
+                    break;
+                default:
+                    stack.push(Double.valueOf(x));
+                    break;
+            }
         }
         return stack.pop();
     }
