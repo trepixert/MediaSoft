@@ -108,7 +108,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
         }
         return false;
     }
-
+  
     public double calc(List<String> postfix) {
         Deque<Double> stack = new ArrayDeque<>();
         for (String x : postfix) {

@@ -10,6 +10,7 @@ import java.util.List;
 
 public class HandlerImpl implements Handler {
     private InstancesContainerSingleton instance = InstancesContainerSingleton.getInstance();
+
     private final Converter converter;
     private final ExpressionParserAndCalc parserAndCalc;
     private List<String> currencies = Arrays.asList("P", "\\$");
