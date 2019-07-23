@@ -1,7 +1,7 @@
-package main.java.task.first;
+package task.first;
 
-import main.java.task.first.implementations.HandlerImpl;
-import main.java.task.first.interfaces.Handler;
+import task.first.interfaces.Handler;
+import task.first.singletons.InstancesContainerSingleton;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class CurrencyConverter {
     private final Handler handler;
 
     public CurrencyConverter(){
-        handler = new HandlerImpl();
+        handler = InstancesContainerSingleton.getInstance().handler();
     }
 
     public static void main(String[] args) {

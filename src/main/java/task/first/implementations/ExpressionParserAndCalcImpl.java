@@ -1,12 +1,15 @@
-package main.java.task.first.implementations;
+package task.first.implementations;
 
-import main.java.task.first.interfaces.ExpressionParserAndCalc;
+import task.first.interfaces.ExpressionParserAndCalc;
+import task.first.singletons.ResourcesContainerSingleton;
 
 import java.util.*;
 
 public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
-    private String operators = "+-";
-    private String delimiters = "() " + operators;
+    private ResourcesContainerSingleton resource = ResourcesContainerSingleton.getInstance();
+
+    private final String operators = resource.getOperators();
+    private final String delimiters = resource.getDelimiters();
 
     private boolean flag = true;
 
@@ -37,12 +40,10 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
         Deque<String> stack = new ArrayDeque<>();
         StringTokenizer tokenizer = new StringTokenizer(infix, delimiters, true);
         String prev = "";
-        String curr = "";
+        String curr;
         while (tokenizer.hasMoreTokens()) {
             curr = tokenizer.nextToken();
-            if (!tokenizer.hasMoreTokens() && isOperator(curr)) {
-                System.out.println("Некорректное выражение.");
-                flag = false;
+            if (checkExpression(tokenizer, curr)) {
                 return postfix;
             }
             if (curr.equals(" ")) continue;
@@ -51,9 +52,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
                 else if (curr.equals(")")) {
                     while (!stack.peek().equals("(")) {
                         postfix.add(stack.pop());
-                        if (stack.isEmpty()) {
-                            System.out.println("Скобки не согласованы.");
-                            flag = false;
+                        if (checkToConsistency(stack)) {
                             return postfix;
                         }
                     }
@@ -62,7 +61,10 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
                         postfix.add(stack.pop());
                     }
                 } else {
-                    if (curr.equals("-") && (prev.equals("") || (isDelimiter(prev) && !prev.equals(")")))) {
+                    if (curr.equals("-") && (prev.equals("")
+                            ||
+                            (isDelimiter(prev) && !prev.equals(")")))
+                    ) {
                         curr = "u-";
                     } else {
                         while (!stack.isEmpty() && (priority(curr) <= priority(stack.peek()))) {
@@ -89,6 +91,24 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
         return postfix;
     }
 
+    private boolean checkToConsistency(Deque<String> stack) {
+        if (stack.isEmpty()) {
+            System.out.println("Скобки не согласованы.");
+            flag = false;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkExpression(StringTokenizer tokenizer, String curr) {
+        if (!tokenizer.hasMoreTokens() && isOperator(curr)) {
+            System.out.println("Некорректное выражение.");
+            flag = false;
+            return true;
+        }
+        return false;
+    }
+  
     public double calc(List<String> postfix) {
         Deque<Double> stack = new ArrayDeque<>();
         for (String x : postfix) {

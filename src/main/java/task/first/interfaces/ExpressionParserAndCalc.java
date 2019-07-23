@@ -1,4 +1,4 @@
-package main.java.task.first.interfaces;
+package task.first.interfaces;
 
 import java.util.List;
 
