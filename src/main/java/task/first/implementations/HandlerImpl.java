@@ -1,8 +1,8 @@
-package main.java.task.first.Implementations;
+package main.java.task.first.implementations;
 
-import main.java.task.first.Interfaces.Converter;
-import main.java.task.first.Interfaces.ExpressionParserAndCalc;
-import main.java.task.first.Interfaces.Handler;
+import main.java.task.first.interfaces.Converter;
+import main.java.task.first.interfaces.ExpressionParserAndCalc;
+import main.java.task.first.interfaces.Handler;
 
 import java.util.Arrays;
 import java.util.List;

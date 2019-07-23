@@ -1,4 +1,4 @@
-package main.java.task.first.Interfaces;
+package main.java.task.first.interfaces;
 
 public interface Converter {
     String toDollars(String number);

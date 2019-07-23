@@ -1,7 +1,7 @@
 package main.java.task.first;
 
-import main.java.task.first.Implementations.HandlerImpl;
-import main.java.task.first.Interfaces.Handler;
+import main.java.task.first.implementations.HandlerImpl;
+import main.java.task.first.interfaces.Handler;
 
 import java.util.Scanner;
 

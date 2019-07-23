@@ -1,7 +1,7 @@
-package main.java.task.first.Implementations;
+package main.java.task.first.implementations;
 
-import main.java.task.first.Interfaces.Converter;
-import main.java.task.first.Interfaces.UploaderRateFromFile;
+import main.java.task.first.interfaces.Converter;
+import main.java.task.first.interfaces.UploaderRateFromFile;
 
 import java.io.File;
 import java.util.Scanner;
