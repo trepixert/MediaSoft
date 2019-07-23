@@ -1,4 +1,4 @@
-package task.first.singleton;
+package task.first.singletons;
 
 import task.first.implementations.ConverterImpl;
 import task.first.implementations.ExpressionParserAndCalcImpl;

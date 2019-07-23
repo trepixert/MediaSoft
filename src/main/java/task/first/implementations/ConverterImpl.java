@@ -1,7 +1,7 @@
 package task.first.implementations;
 
 import task.first.interfaces.Converter;
-import task.first.singleton.ResourcesContainerSingleton;
+import task.first.singletons.ResourcesContainerSingleton;
 
 public class ConverterImpl implements Converter {
 

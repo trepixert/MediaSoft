@@ -1,7 +1,7 @@
 package task.first;
 
 import task.first.interfaces.Handler;
-import task.first.singleton.InstancesContainerSingleton;
+import task.first.singletons.InstancesContainerSingleton;
 
 import java.util.Scanner;
 

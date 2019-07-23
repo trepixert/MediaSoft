@@ -3,7 +3,7 @@ package task.first.implementations;
 import task.first.interfaces.Converter;
 import task.first.interfaces.ExpressionParserAndCalc;
 import task.first.interfaces.Handler;
-import task.first.singleton.InstancesContainerSingleton;
+import task.first.singletons.InstancesContainerSingleton;
 
 import java.util.Arrays;
 import java.util.List;

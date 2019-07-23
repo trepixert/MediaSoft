@@ -1,7 +1,7 @@
 package task.first.implementations;
 
 import task.first.interfaces.ExpressionParserAndCalc;
-import task.first.singleton.ResourcesContainerSingleton;
+import task.first.singletons.ResourcesContainerSingleton;
 
 import java.util.*;
 
