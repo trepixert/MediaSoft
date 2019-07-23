@@ -1,21 +1,23 @@
-package main.java.task.first.Implementations;
+package task.first.implementations;
 
-import main.java.task.first.Interfaces.Converter;
-import main.java.task.first.Interfaces.ExpressionParserAndCalc;
-import main.java.task.first.Interfaces.Handler;
+import task.first.interfaces.Converter;
+import task.first.interfaces.ExpressionParserAndCalc;
+import task.first.interfaces.Handler;
+import task.first.singleton.InstancesContainerSingleton;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class HandlerImpl implements Handler {
+    private InstancesContainerSingleton instance = InstancesContainerSingleton.getInstance();
     private final Converter converter;
     private final ExpressionParserAndCalc parserAndCalc;
     private List<String> currencies = Arrays.asList("P", "\\$");
     private StringBuilder editExpression;
 
     public HandlerImpl() {
-        converter = new ConverterImpl();
-        parserAndCalc = new ExpressionParserAndCalcImpl();
+        converter = instance.converter();
+        parserAndCalc = instance.parserAndCalc();
     }
 
     /**

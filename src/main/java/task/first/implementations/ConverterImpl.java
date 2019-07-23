@@ -1,25 +1,14 @@
-package main.java.task.first.Implementations;
+package task.first.implementations;
 
-import main.java.task.first.Interfaces.Converter;
-import main.java.task.first.Interfaces.UploaderRateFromFile;
-
-import java.io.File;
-import java.util.Scanner;
+import task.first.interfaces.Converter;
+import task.first.singleton.ResourcesContainerSingleton;
 
 public class ConverterImpl implements Converter {
+
     private final double DOLLAR_COURSE;
-    private UploaderRateFromFile uploaderRateFromFile = path -> {
-        File file = new File(path);
-        try (Scanner scanner = new Scanner(file)){
-            return Double.parseDouble(scanner.nextLine());
-        }catch (Exception e){
-            System.err.println(file.getAbsolutePath());
-        }
-        return 65.75;
-    };
 
     public ConverterImpl() {
-        DOLLAR_COURSE = uploaderRateFromFile.read("C:\\Users\\Ramis\\IdeaProjects\\MediaSoft\\src\\main\\java\\resources\\Rate.txt");
+        DOLLAR_COURSE = ResourcesContainerSingleton.getInstance().getDollarCourse();
     }
 
     @Override
