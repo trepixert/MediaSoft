@@ -10,16 +10,16 @@ import task.first.interfaces.Handler;
 import task.first.interfaces.UploadProperty;
 
 public class InstancesContainerSingleton {
-    private static final InstancesContainerSingleton instance;
+    private static final InstancesContainerSingleton INSTANCE;
 
     private InstancesContainerSingleton(){}
 
     static{
-        instance = new InstancesContainerSingleton();
+        INSTANCE = new InstancesContainerSingleton();
     }
 
     public static InstancesContainerSingleton getInstance(){
-        return instance;
+        return INSTANCE;
     }
 
     public Converter converter(){
