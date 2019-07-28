@@ -25,6 +25,11 @@ public class HandlerImpl implements Handler {
      * Сначала идет проверка на наличие необходимой валюты, далее обработка и привод выражения
      * к той валюте, которую изначально ввел пользователь, например:
      * если валюта доллар, то методом обработки выражения будет:
+     *
+     * @param currency   валюта
+     * @param expression выражение, которое необходимо посчитать
+     * @return результатом является выполнение выражения
+     * @throws Exception в случае, если введенная пользователем валюта не обнаружится
      * @see HandlerImpl#handlerToDollars(String)
      * если валюта рубль, то:
      * @see HandlerImpl#handlerToRubles(String)
@@ -33,11 +38,6 @@ public class HandlerImpl implements Handler {
      * @see ExpressionParserAndCalcImpl#parse(String)
      * и вычисляется:
      * @see ExpressionParserAndCalcImpl#calc(List)
-     *
-     * @param currency валюта
-     * @param expression выражение, которое необходимо посчитать
-     * @return результатом является выполнение выражения
-     * @throws Exception в случае, если введенная пользователем валюта не обнаружится
      */
     @Override
     public double doHandlerAndGetResult(String currency, String expression) throws Exception {
@@ -64,15 +64,11 @@ public class HandlerImpl implements Handler {
                                 , "")
                         .replaceAll(",", ".");
         List<String> expressions = parserAndCalc.parse(newExpression);
-        double result = 0;
-        if (parserAndCalc.isFlag()) {
-            result = parserAndCalc.calc(expressions);
-        }
-        return result;
+
+        return parserAndCalc.calc(expressions);
     }
 
     /**
-     *
      * @param expression выражение, которое необходимо конвертировать
      * @return конвертированное выражение в рублях
      */
@@ -92,7 +88,6 @@ public class HandlerImpl implements Handler {
     }
 
     /**
-     *
      * @param expression выражение, которое необходимо конвертировать
      * @return конвертированное выражение в долларах
      */
@@ -126,7 +121,7 @@ public class HandlerImpl implements Handler {
      *                   в первом случае, если валюта, аналогично рублю, будет находиться справа
      *                   от числа, то применяется реверсированное выделение числа, а иначе
      *                   линейное (объяснение выше)
-     * @param currency валюта, которую нужно конвертировать
+     * @param currency   валюта, которую нужно конвертировать
      * @return строку с установленными слэшами, для последующего сплита и конвертации
      */
     private String handleExpressionToConvert(boolean isReversed, char currency) {
