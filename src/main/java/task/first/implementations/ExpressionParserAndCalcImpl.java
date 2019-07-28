@@ -63,7 +63,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
                     }
 
                     if (curr.equals(")")) {
-                        getNumsIntoBrackets(postfix, stack);
+                        getNumsInBrackets(postfix, stack);
                         continue;
                     }
 
@@ -112,7 +112,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
      * @param postfix результирующий список
      * @param stack   стэк с операторами и скобками
      */
-    private void getNumsIntoBrackets(List<String> postfix, Stack<String> stack) {
+    private void getNumsInBrackets(List<String> postfix, Stack<String> stack) {
         while (!stack.peek().equals("(")) {
             postfix.add(stack.pop());
             checkForConsistencyOfBrackets(stack);
@@ -126,7 +126,7 @@ public class ExpressionParserAndCalcImpl implements ExpressionParserAndCalc {
     /**
      * вызывается в определенный момент для проверки согласованности скобок
      * @see #parse(String)
-     * @see #getNumsIntoBrackets(List, Stack)
+     * @see #getNumsInBrackets(List, Stack)
      *
      * @param stack стэк операторов и скобок
      */
